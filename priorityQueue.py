@@ -70,3 +70,76 @@ class MaxPriorityQueue(object):
 
 	def __repr__(self):
 		return str(self.array)
+
+
+
+#implementation of MinPriorityQueue using the min heap property of heaps
+
+class MinPriorityQueue(object):
+
+	def __init__(self):
+		self.array = []
+
+
+	def is_empty(self):
+		return self.array == []
+
+
+	def size(self):
+		return len(self.array)
+
+
+	def min_heapify(self, i):
+		left = i*2+1
+		right = i*2+2
+
+		smallest = i
+
+		if left < self.size() and self.array[left] < self.array[i]:
+			smallest = left
+
+		if right < self.size() and self.array[right] < self.array[smallest]:
+			smallest = right
+
+		if smallest != i:
+			self.array[smallest], self.array[i] = self.array[i], self.array[smallest]
+			self.min_heapify(smallest)
+
+	
+	def heap_decrease_key(self, array, n, key):
+		if key > array[n]:
+			raise Exception("Key is greater than exisiting one")
+
+		array[n] = key
+
+		while n>0 and array[floor((n-1)/2)] > array[n]:
+			array[n], array[floor((n-1)/2)] = array[floor((n-1)/2)], array[n]
+			n = floor((n-1)/2)
+
+
+	def insert(self, key):
+		n = self.size()
+		self.array.append((2**63-1))
+		self.heap_decrease_key(self.array, n, key)
+
+
+	def peek(self):
+		if not self.is_empty():
+			return self.array[0]
+		else:
+			raise Exception("Queue is Empty")
+
+	
+	def pop(self):
+		if not self.is_empty():
+			minimum = self.array[0]
+			del self.array[0]
+
+			self.min_heapify(0)
+			return minimum
+		else:
+			raise Exception("Queue is Empty")
+
+
+	def __repr__(self):
+		return str(self.array)
